@@ -1,0 +1,151 @@
+$tablet-width: 868px;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: 60s linear 0s infinite alternate background-pattern;
+  background-color: #48cae4;
+  background-image: url("./assets/images/background-pattern.svg");
+  background-size: 25%;
+  font-family: Montserrat, sans-serif;
+}
+
+@keyframes background-pattern {
+  0% {
+    background-position: 0% 0%;
+  }
+
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.container {
+  display: flex;
+  max-width: 1360px;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 50px;
+  background-color: #fff;
+  box-shadow: 0 0 50px 25px rgba($color: #1a6473, $alpha: 50%);
+  font-size: 24px;
+}
+
+.hangman,
+.quiz {
+  padding: 100px 50px;
+}
+
+.hangman {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quiz {
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.secret-word {
+  font-size: 48px;
+}
+
+.hint,
+.incorrect-guesses {
+  font-size: inherit;
+  text-align: center;
+}
+
+.incorrect-guesses span {
+  color: #d62828;
+}
+
+.virtual-keyboard {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+
+  .virtual-keyboard__key {
+    display: flex;
+    width: calc(100% / 9 - 5px);
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #48cae4;
+    box-shadow:
+      1px 1px 0 0 #34b4ce,
+      2px 2px 0 0 #34b4ce,
+      3px 3px 0 0 #34b4ce,
+      4px 4px 0 0 #34b4ce;
+    color: #fff;
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+
+    &:hover:not(.used) {
+      box-shadow:
+        1px 1px 0 0 #34b4ce,
+        2px 2px 0 0 #34b4ce,
+        1px 1px 0 0 #34b4ce,
+        2px 2px 0 0 #34b4ce;
+      transform: translate(2px, 2px);
+    }
+
+    &.used {
+      background-color: #34b4ce;
+      box-shadow:
+        0 0 0 0 #34b4ce,
+        0 0 0 0 #34b4ce,
+        0 0 0 0 #34b4ce,
+        0 0 0 0 #34b4ce;
+      cursor: default;
+      transform: translate(4px, 4px);
+    }
+  }
+}
+
+@media screen and (max-device-width: $tablet-width) {
+  body {
+    padding: 20px;
+    background-size: 100%;
+  }
+
+  .container {
+    width: 100%;
+    flex-direction: column;
+    font-size: 18px;
+  }
+
+  .hangman,
+  .quiz {
+    padding: 25px;
+  }
+
+  .hangman img {
+    width: 200px;
+  }
+
+  .quiz {
+    width: 100%;
+  }
+
+  .secret-word {
+    font-size: 36px;
+  }
+}

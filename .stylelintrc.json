@@ -1,0 +1,14 @@
+{
+  "plugins": ["stylelint-order", "stylelint-scss", "stylelint-prettier"],
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-standard-scss",
+    "stylelint-config-idiomatic-order",
+    "stylelint-prettier/recommended"
+  ],
+  "rules": {
+    "prettier/prettier": true,
+    "selector-class-pattern": null
+  },
+  "defaultSeverity": "warning"
+}
