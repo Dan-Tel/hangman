@@ -32,6 +32,10 @@ const config = {
         type: "asset/resource",
       },
       {
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        loader: "file-loader",
+      },
+      {
         test: /\.html$/i,
         loader: "html-loader",
       },
