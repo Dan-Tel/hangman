@@ -8,6 +8,7 @@ $tablet-width: 868px;
 
 body {
   display: flex;
+  overflow: hidden;
   height: 100dvh;
   align-items: center;
   justify-content: center;
@@ -87,36 +88,98 @@ body {
     height: 40px;
     align-items: center;
     justify-content: center;
+    border: 1px solid #2b8494;
     border-radius: 10px;
     background-color: #48cae4;
     box-shadow:
       1px 1px 0 0 #34b4ce,
       2px 2px 0 0 #34b4ce,
       3px 3px 0 0 #34b4ce,
-      4px 4px 0 0 #34b4ce;
+      4px 4px 0 0 #2b8494;
     color: #fff;
     cursor: pointer;
     transition: ease-in-out 0.1s;
 
     &:hover:not(.used) {
       box-shadow:
-        1px 1px 0 0 #34b4ce,
-        2px 2px 0 0 #34b4ce,
-        1px 1px 0 0 #34b4ce,
-        2px 2px 0 0 #34b4ce;
+        1px 1px 0 0 #2b8494,
+        2px 2px 0 0 #2b8494,
+        2px 2px 0 0 #2b8494,
+        2px 2px 0 0 #2b8494;
       transform: translate(2px, 2px);
     }
 
     &.used {
       background-color: #34b4ce;
       box-shadow:
-        0 0 0 0 #34b4ce,
-        0 0 0 0 #34b4ce,
-        0 0 0 0 #34b4ce,
-        0 0 0 0 #34b4ce;
+        0 0 0 0 #2b8494,
+        0 0 0 0 #2b8494,
+        0 0 0 0 #2b8494,
+        0 0 0 0 #2b8494;
       cursor: default;
       transform: translate(4px, 4px);
     }
+  }
+}
+
+.modal__wrapper {
+  position: absolute;
+  top: 100%;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  background: rgba($color: #1a6473, $alpha: 50%);
+  opacity: 0;
+  transition: ease-in-out 0.5s;
+
+  &.active {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  border-radius: 50px;
+  background-color: #fff;
+  font-size: 24px;
+  gap: 25px;
+  transform: translateY(50%);
+  transition: ease-in-out 0.7s;
+
+  .modal__wrapper.active & {
+    transform: translateY(0);
+  }
+}
+
+.modal__btn {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #2b8494;
+  border-radius: 10px;
+  background-color: #48cae4;
+  box-shadow:
+    1px 1px 0 0 #34b4ce,
+    2px 2px 0 0 #34b4ce,
+    3px 3px 0 0 #34b4ce,
+    4px 4px 0 0 #2b8494;
+  color: #fff;
+  cursor: pointer;
+  transition: ease-in-out 0.1s;
+
+  &:hover {
+    box-shadow:
+      1px 1px 0 0 #2b8494,
+      2px 2px 0 0 #2b8494,
+      2px 2px 0 0 #2b8494,
+      2px 2px 0 0 #2b8494;
+    transform: translate(2px, 2px);
   }
 }
 

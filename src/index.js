@@ -9,6 +9,24 @@ import hangman5 from "./assets/images/hangman-5.svg";
 import hangman6 from "./assets/images/hangman-6.svg";
 import virtualKeyboardHover from "./assets/audio/virtual-keyboard-hover.mp3";
 
+let incorrectGuesses = 0;
+let correctGuesses = 0;
+let guessedLetters = generateLettersObj();
+
+let secretWord = "RAINBOW";
+let hint =
+  "A meteorological phenomenon that is caused by reflection, refraction, and dispersion of light.";
+
+const hangmanImages = [
+  hangman0,
+  hangman1,
+  hangman2,
+  hangman3,
+  hangman4,
+  hangman5,
+  hangman6,
+];
+
 function generateLettersObj() {
   const lettersObj = {};
 
@@ -20,9 +38,12 @@ function generateLettersObj() {
   return lettersObj;
 }
 
-function getCypheredWord(secretWord, guessedLetters) {
+function getCypheredWord() {
+  correctGuesses = 0;
+
   const letters = secretWord.split("").map((letter) => {
     if (guessedLetters[letter]) {
+      correctGuesses++;
       return letter;
     } else {
       return "_";
@@ -31,6 +52,27 @@ function getCypheredWord(secretWord, guessedLetters) {
 
   const cypheredWord = letters.join(" ");
   return cypheredWord;
+}
+
+function updateHangman() {
+  const hangmanImg = document.querySelector(".hangman img");
+  hangmanImg.src = hangmanImages[incorrectGuesses];
+}
+
+function updateQuiz() {
+  const secretWordNode = document.querySelector(".secret-word");
+  const incorrectGuessesNode = document.querySelector(".incorrect-guesses");
+
+  if (secretWordNode) {
+    secretWordNode.innerHTML = getCypheredWord(secretWord, guessedLetters);
+  }
+  if (incorrectGuesses) {
+    incorrectGuessesNode.innerHTML = `Incorrect guesses: <span>${incorrectGuesses} / 6`;
+  }
+}
+
+function wasGuessSuccessful(letter) {
+  return secretWord.split("").includes(letter);
 }
 
 function createVirtualKeyboard() {
@@ -49,6 +91,23 @@ function createVirtualKeyboard() {
 
       new Audio(virtualKeyboardHover).play();
       key.classList.add("used");
+
+      guessedLetters[letter] = true;
+
+      if (!wasGuessSuccessful(letter)) {
+        incorrectGuesses++;
+      }
+
+      if (incorrectGuesses == 6) {
+        showModal(false);
+      }
+
+      updateQuiz();
+      updateHangman();
+
+      if (correctGuesses == secretWord.length) {
+        showModal(true);
+      }
     });
 
     virtualKeyboard.append(key);
@@ -57,7 +116,7 @@ function createVirtualKeyboard() {
   return virtualKeyboard;
 }
 
-function createQuiz(secretWord, guessedLetters) {
+function createQuiz() {
   const quiz = document.createElement("div");
   quiz.className = "quiz";
   quiz.innerHTML = `
@@ -66,13 +125,13 @@ function createQuiz(secretWord, guessedLetters) {
     <h2 class="incorrect-guesses">Incorrect guesses: <span>${incorrectGuesses} / 6</span></h2>
   `;
 
-  const virtualKeyboard = createVirtualKeyboard();
+  const virtualKeyboard = createVirtualKeyboard(secretWord, guessedLetters);
   quiz.append(virtualKeyboard);
 
   return quiz;
 }
 
-function createHangman(hangmanImages, incorrectGuesses) {
+function createHangman() {
   const hangman = document.createElement("div");
   hangman.className = "hangman";
   hangman.innerHTML = `<img src="${hangmanImages[incorrectGuesses]}" />`;
@@ -80,30 +139,63 @@ function createHangman(hangmanImages, incorrectGuesses) {
   return hangman;
 }
 
-const body = document.body;
-const container = document.createElement("div");
-container.className = "container";
+function startGame() {
+  const body = document.body;
+  body.innerHTML = "";
 
-let incorrectGuesses = 0;
-const guessedLetters = generateLettersObj();
+  const container = document.createElement("div");
+  container.className = "container";
 
-let secretWord = "RAINBOW";
-let hint =
-  "A meteorological phenomenon that is caused by reflection, refraction, and dispersion of light.";
+  incorrectGuesses = 0;
+  guessedLetters = generateLettersObj();
 
-const hangmanImages = [
-  hangman0,
-  hangman1,
-  hangman2,
-  hangman3,
-  hangman4,
-  hangman5,
-  hangman6,
-];
+  secretWord = "RAINBOW";
+  hint =
+    "A meteorological phenomenon that is caused by reflection, refraction, and dispersion of light.";
 
-const hangman = createHangman(hangmanImages, incorrectGuesses);
-const quiz = createQuiz(secretWord, guessedLetters);
+  const hangman = createHangman();
+  const quiz = createQuiz();
+  const modal = createModal();
 
-container.append(hangman);
-container.append(quiz);
-body.append(container);
+  container.append(hangman);
+  container.append(quiz);
+  body.append(container);
+  body.append(modal);
+}
+
+function createModal() {
+  const modalWrapper = document.createElement("div");
+  modalWrapper.className = "modal__wrapper";
+
+  const modal = document.createElement("div");
+  modal.className = "modal";
+
+  modal.innerHTML = `
+    <h2 class="modal__text">YOU LOSE!</h2>
+  `;
+
+  const restartButton = document.createElement("button");
+  restartButton.className = "modal__btn";
+  restartButton.innerHTML = "RESTART";
+  restartButton.addEventListener("click", startGame);
+
+  modal.append(restartButton);
+
+  modalWrapper.append(modal);
+
+  return modalWrapper;
+}
+
+function updateModal(isWin) {
+  const modalText = document.querySelector(".modal__text");
+  modalText.innerHTML = `YOU ${isWin ? "WIN🤩" : "LOSE😓"}`;
+}
+
+function showModal(isWin) {
+  updateModal(isWin);
+
+  const modalWrapper = document.querySelector(".modal__wrapper");
+  modalWrapper.classList.add("active");
+}
+
+startGame();
