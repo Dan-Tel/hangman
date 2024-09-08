@@ -13,9 +13,35 @@ let incorrectGuesses = 0;
 let correctGuesses = 0;
 let guessedLetters = generateLettersObj();
 
-let secretWord = "RAINBOW";
-let hint =
-  "A meteorological phenomenon that is caused by reflection, refraction, and dispersion of light.";
+const GAME_DATA = [
+  {
+    secretWord: "RAINBOW",
+    hint: "A meteorological phenomenon that is caused by reflection, refraction, and dispersion of light.",
+  },
+  {
+    secretWord: "LANGUAGE",
+    hint: "A system of communication consisting of words, gestures, and syntax.",
+  },
+  {
+    secretWord: "WHISPER",
+    hint: "To speak very softly or quietly, often in a secretive manner.",
+  },
+  {
+    secretWord: "VACATION",
+    hint: "A period of time devoted to pleasure, rest, or relaxation.",
+  },
+  {
+    secretWord: "NOSTALGIA",
+    hint: "A sentimental longing or wistful affection for the past.",
+  },
+  {
+    secretWord: "CURIOSITY",
+    hint: "A strong desire to know or learn something.",
+  },
+];
+
+console.log(getRandomInt(0, GAME_DATA.length));
+let { secretWord, hint } = GAME_DATA[getRandomInt(0, GAME_DATA.length)];
 
 const hangmanImages = [
   hangman0,
@@ -26,6 +52,12 @@ const hangmanImages = [
   hangman5,
   hangman6,
 ];
+
+function getRandomInt(min, max) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+}
 
 function generateLettersObj() {
   const lettersObj = {};
@@ -149,9 +181,7 @@ function startGame() {
   incorrectGuesses = 0;
   guessedLetters = generateLettersObj();
 
-  secretWord = "RAINBOW";
-  hint =
-    "A meteorological phenomenon that is caused by reflection, refraction, and dispersion of light.";
+  ({ secretWord, hint } = GAME_DATA[getRandomInt(0, GAME_DATA.length)]);
 
   const hangman = createHangman();
   const quiz = createQuiz();
@@ -188,7 +218,7 @@ function createModal() {
 
 function updateModal(isWin) {
   const modalText = document.querySelector(".modal__text");
-  modalText.innerHTML = `YOU ${isWin ? "WIN🤩" : "LOSE😓"}`;
+  modalText.innerHTML = `YOU ${isWin ? "WIN! 🤩" : "LOSE! 😓"}`;
 }
 
 function showModal(isWin) {
