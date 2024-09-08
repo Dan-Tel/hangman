@@ -82,7 +82,7 @@ body {
   justify-content: center;
   gap: 5px;
 
-  .virtual-keyboard__key {
+  &__key {
     display: flex;
     width: calc(100% / 9 - 5px);
     height: 40px;
@@ -99,6 +99,7 @@ body {
     color: #fff;
     cursor: pointer;
     transition: ease-in-out 0.1s;
+    user-select: none;
 
     &:hover:not(.used) {
       box-shadow:
@@ -155,32 +156,34 @@ body {
   .modal__wrapper.active & {
     transform: translateY(0);
   }
-}
 
-.modal__btn {
-  display: flex;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #2b8494;
-  border-radius: 10px;
-  background-color: #48cae4;
-  box-shadow:
-    1px 1px 0 0 #34b4ce,
-    2px 2px 0 0 #34b4ce,
-    3px 3px 0 0 #34b4ce,
-    4px 4px 0 0 #2b8494;
-  color: #fff;
-  cursor: pointer;
-  transition: ease-in-out 0.1s;
-
-  &:hover {
+  &__btn {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #2b8494;
+    border-radius: 10px;
+    background-color: #48cae4;
     box-shadow:
-      1px 1px 0 0 #2b8494,
-      2px 2px 0 0 #2b8494,
-      2px 2px 0 0 #2b8494,
-      2px 2px 0 0 #2b8494;
-    transform: translate(2px, 2px);
+      1px 1px 0 0 #34b4ce,
+      2px 2px 0 0 #34b4ce,
+      3px 3px 0 0 #34b4ce,
+      4px 4px 0 0 #2b8494;
+    color: #fff;
+    cursor: pointer;
+    font-size: 24px;
+    transition: ease-in-out 0.1s;
+    user-select: none;
+
+    &:hover {
+      box-shadow:
+        1px 1px 0 0 #2b8494,
+        2px 2px 0 0 #2b8494,
+        2px 2px 0 0 #2b8494,
+        2px 2px 0 0 #2b8494;
+      transform: translate(2px, 2px);
+    }
   }
 }
 

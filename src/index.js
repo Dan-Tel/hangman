@@ -1,5 +1,4 @@
 import "./style.scss";
-import html from "./index.html";
 import hangman0 from "./assets/images/hangman-0.svg";
 import hangman1 from "./assets/images/hangman-1.svg";
 import hangman2 from "./assets/images/hangman-2.svg";
@@ -7,7 +6,9 @@ import hangman3 from "./assets/images/hangman-3.svg";
 import hangman4 from "./assets/images/hangman-4.svg";
 import hangman5 from "./assets/images/hangman-5.svg";
 import hangman6 from "./assets/images/hangman-6.svg";
-import virtualKeyboardHover from "./assets/audio/virtual-keyboard-hover.mp3";
+import virtualKeyboardHoverAudio from "./assets/audio/virtual-keyboard-hover.mp3";
+import winAudio from "./assets/audio/win.mp3";
+import loseAudio from "./assets/audio/lose.mp3";
 
 let incorrectGuesses = 0;
 let correctGuesses = 0;
@@ -40,7 +41,6 @@ const GAME_DATA = [
   },
 ];
 
-console.log(getRandomInt(0, GAME_DATA.length));
 let { secretWord, hint } = GAME_DATA[getRandomInt(0, GAME_DATA.length)];
 
 const hangmanImages = [
@@ -119,9 +119,9 @@ function createVirtualKeyboard() {
     key.innerHTML = letter;
 
     key.addEventListener("click", () => {
-      if (key.classList.contains("used")) return;
+      if (key.classList.contains("used") || incorrectGuesses >= 6) return;
 
-      new Audio(virtualKeyboardHover).play();
+      new Audio(virtualKeyboardHoverAudio).play();
       key.classList.add("used");
 
       guessedLetters[letter] = true;
@@ -207,7 +207,10 @@ function createModal() {
   const restartButton = document.createElement("button");
   restartButton.className = "modal__btn";
   restartButton.innerHTML = "RESTART";
-  restartButton.addEventListener("click", startGame);
+  restartButton.addEventListener("click", () => {
+    new Audio(virtualKeyboardHoverAudio).play();
+    startGame();
+  });
 
   modal.append(restartButton);
 
@@ -218,6 +221,13 @@ function createModal() {
 
 function updateModal(isWin) {
   const modalText = document.querySelector(".modal__text");
+
+  if (isWin) {
+    new Audio(winAudio).play();
+  } else {
+    new Audio(loseAudio).play();
+  }
+
   modalText.innerHTML = `YOU ${isWin ? "WIN! 🤩" : "LOSE! 😓"}`;
 }
 
